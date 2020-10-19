@@ -1,24 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import Keyboard from './components/keyboard'
+import Editor from './components/editor'
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-function App() {
+import { themes } from './const'
+
+
+const App = () => {
+  const [editing, setEditing] = useState(false);
+
+  const onEditionClick = () => {
+  	setEditing(prevState => !prevState);
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Editor checked={editing} onClick={onEditionClick} />
+      <Keyboard editing={editing} theme={themes.default} />
     </div>
   );
 }
