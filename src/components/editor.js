@@ -7,12 +7,12 @@ import styled from 'styled-components'
 
 const Editor = (props) => {
   return (
-    <RowFlex>
+    <RowFlex style={{height: "10vh"}} >
         <ButtonGroup toggle className="mb-2">
           <ToggleButton type="checkbox"
               variant="outline-dark"
               value="1"
-              checked={props.active}
+              checked={props.checked}
               onChange={() => props.onClick()}>
             Modo edición
           </ToggleButton>
@@ -25,7 +25,6 @@ const RowFlex = styled(Row)`
   padding: 1vw;
   flex-direction: column;
   align-items: flex-end;
-  height: 10vh;
   width: 100%;
 `
 
