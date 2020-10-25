@@ -1,14 +1,14 @@
-import React, { useState, useRef } from 'react';
+import './keyboard.css';
+
+import React, { useRef, useState } from 'react';
+import { charCodes, charConfig, charSounds } from  '../const'
 
 import Container from 'react-bootstrap/Container'
-import { charCodes, charConfig, charSounds } from  '../const'
-import Row from 'react-bootstrap/Row'
+import DropzoneUploader from './dropzoneUploader'
 import Key from './key'
 import KeyEdit from './keyEdit'
-import './keyboard.css';
 import Player from './player'
-import Uploader from './uploader'
-
+import Row from 'react-bootstrap/Row'
 import styled from 'styled-components'
 
 const Keyboard = (props) => {
@@ -36,6 +36,7 @@ const Keyboard = (props) => {
 
         if (props.editing) {
           setKeyEditing(key);
+          // document.querySelector("#exampleModalCenter").modal('show');
         };
       }
     }
@@ -67,35 +68,35 @@ const Keyboard = (props) => {
   console.log(keyEditing);
 
   return (
-    <Container fluid onClick={() => playerRef.current.focus()} className="Keyboard">
-      <Row style={{height: "40%"}} className="justify-content-md-center">
-        <Player onKeyPress={(event) => onKeyPress(charCodes[event.charCode])}
-                history={history}
-                ref={playerRef} />
-      </Row>
-      <ContainerFlex style={{height: "40%", textAlign: "center", alignItems: "center"}}>
-        {props.theme.layout.map((rowKeys, i) => {
-          return (
-            <Row key={i} className="justify-content-md-center">
-              {rowKeys.map((key, j) =>
-                <props.keyClass key={key+j} 
-                     disabled={charConfig[key].disabled}
-                     backgroundColor={charConfig[key].backgroundColor}
-                     onClick={onKeyPress}
-                     onSoundOn={register}
-                     onSoundOff={deregister}
-                     char={key}
-                     ref={AddRef(key)}
-                     audio={charSounds[key]} />
-              )}
-            </Row>
-          )
-        })}
-      </ContainerFlex>
-      <Row style={{height: "20%", width: "100%"}}>
-        {props.editing && keyEditing ? <Uploader char={keyEditing} /> : null}
-      </Row>
-    </Container>
+    <React.Fragment>
+      <Container fluid onClick={() => playerRef.current.focus()} className="Keyboard">
+        <Row style={{height: "40%"}} className="justify-content-md-center">
+          <Player onKeyPress={(event) => onKeyPress(charCodes[event.charCode])}
+                  history={history}
+                  ref={playerRef} />
+        </Row>
+        <ContainerFlex style={{height: "40%", textAlign: "center", alignItems: "center"}}>
+          {props.theme.layout.map((rowKeys, i) => {
+            return (
+              <Row key={i} className="justify-content-md-center">
+                {rowKeys.map((key, j) =>
+                  <props.keyClass key={key+j} 
+                       disabled={charConfig[key].disabled}
+                       backgroundColor={charConfig[key].backgroundColor}
+                       onClick={onKeyPress}
+                       onSoundOn={register}
+                       onSoundOff={deregister}
+                       char={key}
+                       ref={AddRef(key)}
+                       audio={charSounds[key]} />
+                )}
+              </Row>
+            )
+          })}
+        </ContainerFlex>
+      {props.editing && keyEditing ? <DropzoneUploader char={keyEditing} /> : null}
+      </Container>
+    </React.Fragment>
   );
 }
 
