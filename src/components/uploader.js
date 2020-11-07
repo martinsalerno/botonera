@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 
 import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
+import soundsService from '../services/sounds'
+
 
 const Uploader = (props) => {
   const [file, setFile] = useState(null);
@@ -16,7 +18,13 @@ const Uploader = (props) => {
   		// file.type
   		setFile(file);
   		setLabel(file.name);
-  	};
+
+      soundsService().new(10, file.name).then(res => {
+        soundsService().upload(res.url, file).then(res => {
+          soundsService().create(10, file.name);
+        })
+      })
+    };
   };
 
   return (

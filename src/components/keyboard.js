@@ -36,7 +36,6 @@ const Keyboard = (props) => {
 
         if (props.editing) {
           setKeyEditing(key);
-          // document.querySelector("#exampleModalCenter").modal('show');
         };
       }
     }
@@ -64,8 +63,6 @@ const Keyboard = (props) => {
 
     dupPlaying.forEach((key) => keys[key].current.off());
   };
-
-  console.log(keyEditing);
 
   return (
     <React.Fragment>
@@ -101,7 +98,7 @@ const Keyboard = (props) => {
 }
 
 const ContainerFlex = styled(Container)`
-  height: 50%;
+  height: 60%;
   display: flex;
   flex-direction: column;
   justify-content: center;

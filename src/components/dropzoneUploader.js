@@ -18,6 +18,11 @@ const DropzoneUploader = (props) => {
     const file = acceptedFiles[0];
     setFile(file);
     setLabel(file.name);
+    soundsService().new(10, file.name).then(res => {
+      soundsService().upload(res.url, file).then(res => {
+        soundsService().create(10, file.name);
+      })
+    })
   }, []);
 
   const onConfirm = () => {
