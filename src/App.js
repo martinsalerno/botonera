@@ -10,6 +10,7 @@ import Nav from 'react-bootstrap/Nav'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 import keyboardsService from './services/keyboards'
 import soundsService from './services/sounds'
+import usersService from './services/users'
 import { AuthContext } from './contexts/auth'
 
 import { themes } from './const'
@@ -20,6 +21,7 @@ const App = () => {
   const [keyboards, setKeyboards] = useState([]);
   const [selectedKeyboard, setSelectedKeyboard] = useState(null);
   const [sounds, setSounds] = useState([]);
+  const [authURLs, setAuthURLs] = useState({});
 
   const onEditionClick = () => {
   	if (editing) {
@@ -41,7 +43,7 @@ const App = () => {
       setSelectedKeyboard(kbs[0])
     });
     soundsService().getAll(10).then(sds => setSounds(sds));
-
+    usersService().getOAuthURLs().then(urls => setAuthURLs(urls));
   }, []);
 
   return (
@@ -61,6 +63,12 @@ const App = () => {
             {sounds.map((sound) => {
               return <NavDropdown.Item eventKey="2.2">{sound.name}</NavDropdown.Item>
             })}
+          </NavDropdown>
+          <NavDropdown title="Gmail" id="nav-dropdown" style={{width: "30vh", border: "solid whitesmoke", textAlign: "center"}}>
+            <a target="blank" href={authURLs.google}>Login</a>
+          </NavDropdown>
+          <NavDropdown title="Facebook" id="nav-dropdown" style={{width: "30vh", border: "solid whitesmoke", textAlign: "center"}}>
+            <a target="blank" href={authURLs.facebook}>Login</a>
           </NavDropdown>
         </Nav>
         <Editor checked={editing} onClick={onEditionClick} />

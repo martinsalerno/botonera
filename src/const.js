@@ -100,6 +100,9 @@ const themes = {
 	}
 };
 
-const apiURL = process.env.API_URL || "http://localhost:3000";
+console.log(process.env)
+console.log(process.env.REACT_APP_API_URL)
+
+const apiURL = process.env.REACT_APP_API_URL || "http://localhost:4567";
 
 export { charCodes, charConfig, charSounds, themes, apiURL }
