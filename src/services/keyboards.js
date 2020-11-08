@@ -1,12 +1,12 @@
-const KeyboardsService = () => {
-  const url = "localhost:4567";
+import { apiURL } from '../const'
 
+const KeyboardsService = () => {
   const getAllKeyboards = (userId) => {
-    return fetch(`http://localhost:4567/${userId}/keyboards`, {}).then(res => res.json());
+    return fetch(`${apiURL}/${userId}/keyboards`, {}).then(res => res.json());
   };
 
   const createKeyboard = (userId, keyboardName) => {
-    fetch(`http://localhost:4567/${userId}/keyboards`, {
+    fetch(`${apiURL}/${userId}/keyboards`, {
       method: "POST", 
       body: JSON.stringify({ name: keyboardName })
     }).then(res => {
@@ -15,7 +15,7 @@ const KeyboardsService = () => {
   };
 
   const updateKeyboardName = (userId, keyboardId, keyboardName) => {
-    fetch(`http://localhost:4567/${userId}/keyboards/${keyboardId}`, {
+    fetch(`${apiURL}/${userId}/keyboards/${keyboardId}`, {
       method: "PATCH", 
       body: JSON.stringify({ name: keyboardName })
     }).then(res => {
@@ -24,7 +24,7 @@ const KeyboardsService = () => {
   };
 
   const deleteKeyboard = (userId, keyboardId) => {
-    fetch(`http://localhost:4567/${userId}/keyboards/${keyboardId}`, {
+    fetch(`${apiURL}/${userId}/keyboards/${keyboardId}`, {
       method: "DELETE"
     }).then(res => {
       console.log("Request complete! response:", res);
@@ -32,7 +32,7 @@ const KeyboardsService = () => {
   };
 
   const addKeyboardKey = (userId, keyboardId, key, soundId) => {
-    fetch(`http://localhost:4567/${userId}/keyboards/${keyboardId}/keys`, {
+    fetch(`${apiURL}/${userId}/keyboards/${keyboardId}/keys`, {
       method: "POST",
       body: JSON.stringify({ key: key, soundId: soundId })
     }).then(res => {
@@ -41,7 +41,7 @@ const KeyboardsService = () => {
   };
 
   const deleteKeyboardKey = (userId, keyboardId, key) => {
-    fetch(`http://localhost:4567/${userId}/keyboards/${keyboardId}/keys`, {
+    fetch(`${apiURL}/${userId}/keyboards/${keyboardId}/keys`, {
       method: "DELETE",
       body: JSON.stringify({ key: key })
     }).then(res => {

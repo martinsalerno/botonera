@@ -10,6 +10,7 @@ import Nav from 'react-bootstrap/Nav'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 import keyboardsService from './services/keyboards'
 import soundsService from './services/sounds'
+import { AuthContext } from './contexts/auth'
 
 import { themes } from './const'
 
@@ -44,26 +45,28 @@ const App = () => {
   }, []);
 
   return (
-    <Container>
-      <Nav className="justify-content-center" activeKey="1" onSelect={handleSelect}>
-        <NavDropdown title="Keyboards" id="nav-dropdown" style={{width: "30vh", border: "solid whitesmoke", textAlign: "center"}}>
-          <NavDropdown.Item eventKey="1.1"><strong>Nuevo</strong></NavDropdown.Item>
-          <NavDropdown.Divider />
-          {keyboards.map((keyboard) => {
-            return <NavDropdown.Item eventKey="1.2">{keyboard.name}</NavDropdown.Item>
-          })}
-        </NavDropdown>
-        <NavDropdown title="Sounds" id="nav-dropdown" style={{width: "30vh", border: "solid whitesmoke", textAlign: "center"}}>
-          <NavDropdown.Item eventKey="2.1"><strong>Nuevo</strong></NavDropdown.Item>
-          <NavDropdown.Divider />
-          {sounds.map((sound) => {
-            return <NavDropdown.Item eventKey="2.2">{sound.name}</NavDropdown.Item>
-          })}
-        </NavDropdown>
-      </Nav>
-      <Editor checked={editing} onClick={onEditionClick} />
-      <Keyboard style={{height: "90vh"}} keyClass={keyClass} keyboard={selectedKeyboard} editing={editing} theme={themes.default} />
-    </Container>
+    <AuthContext.Provider>
+      <Container>
+        <Nav className="justify-content-center" activeKey="1" onSelect={handleSelect}>
+          <NavDropdown title="Keyboards" id="nav-dropdown" style={{width: "30vh", border: "solid whitesmoke", textAlign: "center"}}>
+            <NavDropdown.Item eventKey="1.1"><strong>Nuevo</strong></NavDropdown.Item>
+            <NavDropdown.Divider />
+            {keyboards.map((keyboard) => {
+              return <NavDropdown.Item eventKey="1.2">{keyboard.name}</NavDropdown.Item>
+            })}
+          </NavDropdown>
+          <NavDropdown title="Sounds" id="nav-dropdown" style={{width: "30vh", border: "solid whitesmoke", textAlign: "center"}}>
+            <NavDropdown.Item eventKey="2.1"><strong>Nuevo</strong></NavDropdown.Item>
+            <NavDropdown.Divider />
+            {sounds.map((sound) => {
+              return <NavDropdown.Item eventKey="2.2">{sound.name}</NavDropdown.Item>
+            })}
+          </NavDropdown>
+        </Nav>
+        <Editor checked={editing} onClick={onEditionClick} />
+        <Keyboard style={{height: "90vh"}} keyClass={keyClass} keyboard={selectedKeyboard} editing={editing} theme={themes.default} />
+      </Container>
+    </AuthContext.Provider>
   );
 }
 

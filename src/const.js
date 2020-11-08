@@ -100,4 +100,6 @@ const themes = {
 	}
 };
 
-export { charCodes, charConfig, charSounds, themes }
+const apiURL = process.env.API_URL || "http://localhost:3000";
+
+export { charCodes, charConfig, charSounds, themes, apiURL }

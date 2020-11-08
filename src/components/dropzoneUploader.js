@@ -6,6 +6,7 @@ import Modal from "react-bootstrap/Modal";
 import { PlayFill } from "react-bootstrap-icons";
 import styled from "styled-components";
 import { useDropzone } from "react-dropzone";
+import soundsService from '../services/sounds'
 
 const DropzoneUploader = (props) => {
   const [file, setFile] = useState(null);
@@ -18,15 +19,14 @@ const DropzoneUploader = (props) => {
     const file = acceptedFiles[0];
     setFile(file);
     setLabel(file.name);
+  }, []);
+
+  const onConfirm = () => {
     soundsService().new(10, file.name).then(res => {
       soundsService().upload(res.url, file).then(res => {
         soundsService().create(10, file.name);
       })
     })
-  }, []);
-
-  const onConfirm = () => {
-    //TODO save file config
   }
 
   const onResetFile = () => {
@@ -57,10 +57,10 @@ const DropzoneUploader = (props) => {
               <PlayFile size={30}></PlayFile>
             </UploadedFile>
             <ConfirmationButtons>
-              <Button variant="outline-primary" onclick={onResetFile}>
+              <Button variant="outline-primary" onClick={onResetFile}>
                 Change File
               </Button>
-              <Button>Confirm</Button>
+              <Button onClick={onConfirm}>Confirm</Button>
             </ConfirmationButtons>
           </div>
         )}

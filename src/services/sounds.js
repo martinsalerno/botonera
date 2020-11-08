@@ -1,12 +1,14 @@
+import { apiURL } from '../const'
+
 const SoundsService = () => {
-  const url = "http://localhost:4567/10";
+  console.log(apiURL);
 
   const getAllSounds = (userId) => {
-    return fetch(`http://localhost:4567/${userId}/sounds`, {}).then(res => res.json());
+    return fetch(`${apiURL}/${userId}/sounds`, {}).then(res => res.json());
   };
 
   const createSound = (userId, soundName) => {
-    return fetch(`http://localhost:4567/${userId}/sounds`, {
+    return fetch(`${apiURL}/${userId}/sounds`, {
       method: "POST", 
       body: JSON.stringify({ name: soundName})
     }).then(res => res.json());
@@ -23,14 +25,14 @@ const SoundsService = () => {
   };
 
   const newSoundUrl = (userId, soundName) => {
-    return fetch(`http://localhost:4567/${userId}/sounds/new_url`, {
+    return fetch(`${apiURL}/${userId}/sounds/new_url`, {
       method: "POST", 
       body: JSON.stringify({ name: soundName})
     }).then(res => res.json());
   };
 
   const deleteSound = (userId, soundName) => {
-    fetch(`http://localhost:4567/${userId}/sounds/new_url`, {
+    fetch(`${apiURL}/${userId}/sounds/new_url`, {
       method: "DELETE", 
       body: JSON.stringify({ name: soundName})
     }).then(res => {
@@ -39,7 +41,7 @@ const SoundsService = () => {
   };
 
   const updateSoundName = (userId, soundId, soundName) => {
-    fetch(`http://localhost:4567/${userId}/sounds/${soundId}`, {
+    fetch(`${apiURL}/${userId}/sounds/${soundId}`, {
       method: "PATCH", 
       body: JSON.stringify({ name: soundName})
     }).then(res => {
