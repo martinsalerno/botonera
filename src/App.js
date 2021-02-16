@@ -1,80 +1,61 @@
 import React, { useState, useEffect } from 'react';
-import Keyboard from './components/keyboard'
-import Editor from './components/editor'
-import Key from './components/key'
-import KeyEdit from './components/keyEdit'
+import Edit from './components/views/edit/Edit'
+import Play from './components/views/play/Play'
+import NavBar from './components/views/nav/NavBar'
+import Empty from './components/views/empty/Empty'
 import Container from 'react-bootstrap/Container'
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Nav from 'react-bootstrap/Nav'
-import NavDropdown from 'react-bootstrap/NavDropdown'
+
 import keyboardsService from './services/keyboards'
 import soundsService from './services/sounds'
 import usersService from './services/users'
-import { AuthContext } from './contexts/auth'
 
 import { themes } from './const'
 
+import { AuthContext } from './contexts/auth'
+
+import styled from 'styled-components'
+import Cookies from 'universal-cookie';
+
 const App = () => {
-  const [editing, setEditing] = useState(false);
-  const [keyClass, setKeyClass] = useState(Key);
-  const [keyboards, setKeyboards] = useState([]);
-  const [selectedKeyboard, setSelectedKeyboard] = useState(null);
-  const [sounds, setSounds] = useState([]);
-  const [authURLs, setAuthURLs] = useState({});
+  const [activeView, setActiveView]         = useState("2");
+  const [activeKeyboard, setActiveKeyboard] = useState({ id: null, keys: [] });
+  const [userData, setUserData]             = useState({});
 
-  const onEditionClick = () => {
-  	if (editing) {
-  		setEditing(false);
-  		setKeyClass(Key);
-  	} else {
-  		setEditing(true);
-  		setKeyClass(KeyEdit);
-  	};
-  }
+  const onSelect = (value) => {
+  	setActiveView(value);
+  };
 
-  const handleSelect = (eventKey) => {
-    console.log(keyboardsService().getAll(10));
+  const refreshKeyboard = (keyboardId) => {
+    keyboardsService().get(keyboardId).then(keyboard => setActiveKeyboard(keyboard));
   };
 
   useEffect(() => {
-    keyboardsService().getAll(10).then(kbs => {
-      setKeyboards(kbs);
-      setSelectedKeyboard(kbs[0])
-    });
-    soundsService().getAll(10).then(sds => setSounds(sds));
-    usersService().getOAuthURLs().then(urls => setAuthURLs(urls));
+    usersService().getMe()
+      .then(userData => {
+        setUserData(userData);
+        setActiveKeyboard(userData.default_keyboard);
+        setActiveView("2")
+      })
+      .catch(_ => {
+        setActiveView("1")
+      })
   }, []);
 
+  const views = {
+    "1": <Empty />,
+    "2": <Play keyboard={activeKeyboard} theme={themes.default} />,
+    "3": <Edit keyboard={activeKeyboard} refreshKeyboard={refreshKeyboard} />
+  };
+
   return (
-    <AuthContext.Provider>
-      <Container>
-        <Nav className="justify-content-center" activeKey="1" onSelect={handleSelect}>
-          <NavDropdown title="Keyboards" id="nav-dropdown" style={{width: "30vh", border: "solid whitesmoke", textAlign: "center"}}>
-            <NavDropdown.Item eventKey="1.1"><strong>Nuevo</strong></NavDropdown.Item>
-            <NavDropdown.Divider />
-            {keyboards.map((keyboard) => {
-              return <NavDropdown.Item eventKey="1.2">{keyboard.name}</NavDropdown.Item>
-            })}
-          </NavDropdown>
-          <NavDropdown title="Sounds" id="nav-dropdown" style={{width: "30vh", border: "solid whitesmoke", textAlign: "center"}}>
-            <NavDropdown.Item eventKey="2.1"><strong>Nuevo</strong></NavDropdown.Item>
-            <NavDropdown.Divider />
-            {sounds.map((sound) => {
-              return <NavDropdown.Item eventKey="2.2">{sound.name}</NavDropdown.Item>
-            })}
-          </NavDropdown>
-          <NavDropdown title="Gmail" id="nav-dropdown" style={{width: "30vh", border: "solid whitesmoke", textAlign: "center"}}>
-            <a target="blank" href={authURLs.google}>Login</a>
-          </NavDropdown>
-          <NavDropdown title="Facebook" id="nav-dropdown" style={{width: "30vh", border: "solid whitesmoke", textAlign: "center"}}>
-            <a target="blank" href={authURLs.facebook}>Login</a>
-          </NavDropdown>
-        </Nav>
-        <Editor checked={editing} onClick={onEditionClick} />
-        <Keyboard style={{height: "90vh"}} keyClass={keyClass} keyboard={selectedKeyboard} editing={editing} theme={themes.default} />
-      </Container>
-    </AuthContext.Provider>
+    <Container>
+      <AuthContext.Provider value={userData}>
+        <NavBar disabled={activeView == "1"} active={activeView} play="2" edit="3" onSelect={onSelect} />
+        {views[activeView]}
+      </AuthContext.Provider>
+    </Container>
   );
 }
 

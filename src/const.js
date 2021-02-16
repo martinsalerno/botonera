@@ -29,44 +29,15 @@ const charCodes = {
 	"122": "z"
 };
 
-const charSounds = {
-	"a": "play.mp3",
-	"b": "bateria.mp3",
-	"c": "ASUBIR.mp3",
-	"d": "datune.mp3",
-    "e": "intro_slane_2.mp3",
-	"f": "synt.mp3",
-	"g": "tune.mp3",
-	"h": "ulipo.mp3",
-	"i": "datune.mp3",
-	"j": "synt.mp3",
-	"k": "synt.mp3",
-	"l": "ulipo.mp3",
-	"m": "synt.mp3",
-	"n": "play.mp3",
-	"o": "play.mp3",
-	"p": "ulipo.mp3",
-	"q": "intro_slane_2.mp3",
-	"r": "intro_slane_2.mp3",
-	"s": "ulipo.mp3",
-	"t": "ulipo.mp3",
-	"u": "ulipo.mp3",
-	"v": "ASUBIR.mp3",
-	"w": "ASUBIR.mp3",
-	"x": "play.mp3",
-	"y": "play.mp3",
-	"z": "intro_slane_2.mp3"
-};
-
 const charDefaultConfig = {
-	span: 1,
+	spam: 1,
 	disabled: false,
 	backgroundColor: "transparent"
 };
 
 const charOverrideConfig = {
 	"space": {
-		span: 4
+		spam: 3
 	},
 	"-": {
 		disabled: true,
@@ -84,7 +55,7 @@ const qwerty = [
 	["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
 	["a", "s", "d" , "f", "g", "h", "j", "k", "l"],
 	["z", "x", "c", "v", "b", "n", "m"],
-	["-", "-", "-", "space", "-", "-", "-"]
+	["-", "-", "space", "-", "-"]
 ];
 
 const themes = {
@@ -100,9 +71,12 @@ const themes = {
 	}
 };
 
-console.log(process.env)
-console.log(process.env.REACT_APP_API_URL)
+const oauthProviders = {
+	google: "google",
+	facebook: "facebook"
+};
 
-const apiURL = process.env.REACT_APP_API_URL || "http://localhost:4567";
+const tokenHeader = "x-botonera-token"; 
+const apiURL      = process.env.REACT_APP_API_URL || "http://localhost:4567";
 
-export { charCodes, charConfig, charSounds, themes, apiURL }
+export { charCodes, charConfig, themes, apiURL, tokenHeader, oauthProviders }

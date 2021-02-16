@@ -1,19 +1,22 @@
 import React, { useCallback, useState } from "react";
 
 import Button from "react-bootstrap/Button";
-import KeyEdit from "./keyEdit";
 import Modal from "react-bootstrap/Modal";
 import { PlayFill } from "react-bootstrap-icons";
 import styled from "styled-components";
 import { useDropzone } from "react-dropzone";
 import soundsService from '../services/sounds'
+import keyboardsService from '../services/keyboards'
 
 const DropzoneUploader = (props) => {
   const [file, setFile] = useState(null);
   const [label, setLabel] = useState(null);
   const [show, setShow] = useState(true);
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    props.onClose();
+  };
 
   const onDrop = useCallback((acceptedFiles) => {
     const file = acceptedFiles[0];
@@ -22,9 +25,14 @@ const DropzoneUploader = (props) => {
   }, []);
 
   const onConfirm = () => {
-    soundsService().new(10, file.name).then(res => {
-      soundsService().upload(res.url, file).then(res => {
-        soundsService().create(10, file.name);
+    soundsService().new(file.name).then(newSound => {
+      soundsService().upload(newSound.url, file).then(res => {
+        soundsService().create(file.name).then(sound => {
+          if (props.keyboard) {
+            keyboardsService().addKey(props.keyboard.id, props.targetKey, sound.id)
+            props.onUpload();
+          };
+        });
       })
     })
   }

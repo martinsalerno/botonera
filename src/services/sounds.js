@@ -1,16 +1,15 @@
 import { apiURL } from '../const'
+import { AuthenticatedRequest } from './helpers'
 
 const SoundsService = () => {
-  console.log(apiURL);
-
-  const getAllSounds = (userId) => {
-    return fetch(`${apiURL}/${userId}/sounds`, {}).then(res => res.json());
+  const getAllSounds = () => {
+    return AuthenticatedRequest('/me', {}).then(res => res.json());
   };
 
-  const createSound = (userId, soundName) => {
-    return fetch(`${apiURL}/${userId}/sounds`, {
+  const createSound = (soundName) => {
+    return AuthenticatedRequest('/sounds', {
       method: "POST", 
-      body: JSON.stringify({ name: soundName})
+      body: JSON.stringify({ name: soundName })
     }).then(res => res.json());
   };
 
@@ -19,54 +18,61 @@ const SoundsService = () => {
       method: "PUT",
       body: soundFile,
       headers: {
-        'content-type': soundFile.type,
-      },
+        'content-type': soundFile.type
+      }
     }).then(res => res.status);
   };
 
-  const newSoundUrl = (userId, soundName) => {
-    return fetch(`${apiURL}/${userId}/sounds/new_url`, {
-      method: "POST", 
-      body: JSON.stringify({ name: soundName})
-    }).then(res => res.json());
-  };
-
-  const deleteSound = (userId, soundName) => {
-    fetch(`${apiURL}/${userId}/sounds/new_url`, {
+  const deleteSound = (soundId) => {
+    return AuthenticatedRequest(`/sounds/${soundId}`, {
       method: "DELETE", 
-      body: JSON.stringify({ name: soundName})
+      body: JSON.stringify({ id: soundId })
     }).then(res => {
       console.log("Request complete! response:", res);
     });
   };
 
-  const updateSoundName = (userId, soundId, soundName) => {
-    fetch(`${apiURL}/${userId}/sounds/${soundId}`, {
+  const downloadSound = (soundId) => {
+    return AuthenticatedRequest(`/sounds/${soundId}/download`)
+  };
+
+  const newSoundUrl = (soundName) => {
+    return AuthenticatedRequest('/sounds/new_url', {
+      method: "POST", 
+      body: JSON.stringify({ name: soundName })
+    }).then(res => res.json());
+  };
+
+  const updateSoundName = (soundId, soundName) => {
+    return AuthenticatedRequest(`/sounds/${soundId}`, {
       method: "PATCH", 
-      body: JSON.stringify({ name: soundName})
+      body: JSON.stringify({ name: soundName })
     }).then(res => {
       console.log("Request complete! response:", res);
     });
   };
 
   return {
-    getAll: function (userId) {
-      return getAllSounds(userId);
+    getAll: function () {
+      return getAllSounds();
     },
-    create: function (userId, soundName) {
-      return createSound(userId, soundName);
+    create: function (soundName) {
+      return createSound(soundName);
     },
     upload: function (url, soundFile) {
       return uploadSound(url, soundFile);
     },
-    delete: function (userId, soundId) {
-      return deleteSound(userId, soundId);
+    delete: function (soundId) {
+      return deleteSound(soundId);
     },
-    new: function (userId, soundName) {
-      return newSoundUrl(userId, soundName);
+    download: function (soundId) {
+      return downloadSound(soundId);
     },
-    updateName: function (userId, soundId, soundName) {
-      return updateSoundName(userId, soundId, soundName);
+    new: function (soundName) {
+      return newSoundUrl(soundName);
+    },
+    updateName: function (soundId, soundName) {
+      return updateSoundName(soundId, soundName);
     }
   };
 };

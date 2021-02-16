@@ -1,12 +1,17 @@
 import { apiURL } from '../const'
+import { AuthenticatedRequest } from './helpers'
 
 const KeyboardsService = () => {
-  const getAllKeyboards = (userId) => {
-    return fetch(`${apiURL}/${userId}/keyboards`, {}).then(res => res.json());
+  const getKeyboard = (keyboardId) => {
+    return AuthenticatedRequest(`/keyboards/${keyboardId}`, {}).then(res => res.json());
   };
 
-  const createKeyboard = (userId, keyboardName) => {
-    fetch(`${apiURL}/${userId}/keyboards`, {
+  const getAllKeyboards = () => {
+    return AuthenticatedRequest('/keyboards', {}).then(res => res.json());
+  };
+
+  const createKeyboard = (keyboardName) => {
+    return AuthenticatedRequest('/keyboards', {
       method: "POST", 
       body: JSON.stringify({ name: keyboardName })
     }).then(res => {
@@ -14,8 +19,8 @@ const KeyboardsService = () => {
     });
   };
 
-  const updateKeyboardName = (userId, keyboardId, keyboardName) => {
-    fetch(`${apiURL}/${userId}/keyboards/${keyboardId}`, {
+  const updateKeyboardName = (keyboardId, keyboardName) => {
+    return AuthenticatedRequest(`/keyboards/${keyboardId}`, {
       method: "PATCH", 
       body: JSON.stringify({ name: keyboardName })
     }).then(res => {
@@ -23,25 +28,25 @@ const KeyboardsService = () => {
     });
   };
 
-  const deleteKeyboard = (userId, keyboardId) => {
-    fetch(`${apiURL}/${userId}/keyboards/${keyboardId}`, {
+  const deleteKeyboard = (keyboardId) => {
+    return AuthenticatedRequest(`/keyboards/${keyboardId}`, {
       method: "DELETE"
     }).then(res => {
       console.log("Request complete! response:", res);
     });
   };
 
-  const addKeyboardKey = (userId, keyboardId, key, soundId) => {
-    fetch(`${apiURL}/${userId}/keyboards/${keyboardId}/keys`, {
+  const addKeyboardKey = (keyboardId, key, soundId) => {
+    return AuthenticatedRequest(`/keyboards/${keyboardId}/keys`, {
       method: "POST",
-      body: JSON.stringify({ key: key, soundId: soundId })
+      body: JSON.stringify({ key: key, sound_id: soundId })
     }).then(res => {
       console.log("Request complete! response:", res);
     });
   };
 
-  const deleteKeyboardKey = (userId, keyboardId, key) => {
-    fetch(`${apiURL}/${userId}/keyboards/${keyboardId}/keys`, {
+  const deleteKeyboardKey = (keyboardId, key) => {
+    return AuthenticatedRequest(`/keyboards/${keyboardId}/keys`, {
       method: "DELETE",
       body: JSON.stringify({ key: key })
     }).then(res => {
@@ -50,23 +55,26 @@ const KeyboardsService = () => {
   };
 
   return {
-    getAll: function (userId) {
-      return getAllKeyboards(userId);
+    get: function (keyboardId) {
+      return getKeyboard(keyboardId);
     },
-    create: function (userId, keyboardName) {
-      return createKeyboard(userId, keyboardName);
+    getAll: function () {
+      return getAllKeyboards();
     },
-    updateName: function (userId, keyboardId, keyboardName) {
-      return updateKeyboardName(userId, keyboardId, keyboardName);
+    create: function (keyboardName) {
+      return createKeyboard(keyboardName);
     },
-    delete: function (userId, keyboardId) {
-      return deleteKeyboard(userId, keyboardId)
+    updateName: function (keyboardId, keyboardName) {
+      return updateKeyboardName(keyboardId, keyboardName);
     },
-    addKey: function (userId, keyboardId, key, soundId) {
-      return addKeyboardKey(userId, keyboardId, key, soundId);
+    delete: function (keyboardId) {
+      return deleteKeyboard(keyboardId)
     },
-    removeKey: function (userId, keyboardId, key) {
-      return deleteKeyboardKey(userId, keyboardId, key);
+    addKey: function (keyboardId, key, soundId) {
+      return addKeyboardKey(keyboardId, key, soundId);
+    },
+    removeKey: function (keyboardId, key) {
+      return deleteKeyboardKey(keyboardId, key);
     }
   };
 };
