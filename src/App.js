@@ -8,15 +8,10 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import keyboardsService from './services/keyboards'
-import soundsService from './services/sounds'
 import usersService from './services/users'
 
 import { themes } from './const'
-
 import { AuthContext } from './contexts/auth'
-
-import styled from 'styled-components'
-import Cookies from 'universal-cookie';
 
 const App = () => {
   const [activeView, setActiveView]         = useState("2");
@@ -52,7 +47,7 @@ const App = () => {
   return (
     <Container>
       <AuthContext.Provider value={userData}>
-        <NavBar disabled={activeView == "1"} active={activeView} play="2" edit="3" onSelect={onSelect} />
+        <NavBar disabled={activeView === "1"} active={activeView} play="2" edit="3" onSelect={onSelect} />
         {views[activeView]}
       </AuthContext.Provider>
     </Container>

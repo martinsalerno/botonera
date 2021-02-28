@@ -1,9 +1,5 @@
 import React from 'react';
 
-import Container from 'react-bootstrap/Container'
-import Button from 'react-bootstrap/Button'
-import ButtonGroup from 'react-bootstrap/ButtonGroup'
-
 import usersService from '../../../services/users'
 import Icon from '../../Icon'
 

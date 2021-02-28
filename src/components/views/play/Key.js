@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle, useState } from 'react';
+import React from 'react';
 
 import ToggleButton from 'react-bootstrap/ToggleButton'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
@@ -23,7 +23,7 @@ const Key = (props) => {
                         disabled={props.disabled}
                         onChange={() => props.onClick()}
                         value={1}
-                        color={props.char == '-' ? 'transparent' : 'initial'}
+                        color={props.char === '-' ? 'transparent' : 'initial'}
                         spam={props.spam}
           >
             {props.loading

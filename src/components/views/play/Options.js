@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-import Badge from 'react-bootstrap/Badge'
 import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
 import ToggleButton from 'react-bootstrap/ToggleButton'

@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import Button from 'react-bootstrap/Button'
 import styled from 'styled-components'
 
 const Key = (props) => {
-  const [audio] = useState(new Audio("/" + props.audio));
   return (
     <ButtonKey
       variant={props.disabled ? "outline-light" : "outline-success"}

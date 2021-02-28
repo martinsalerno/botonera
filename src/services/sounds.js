@@ -1,4 +1,3 @@
-import { apiURL } from '../const'
 import { AuthenticatedRequest } from './helpers'
 
 const SoundsService = () => {

@@ -1,4 +1,4 @@
-import { apiURL, tokenHeader } from '../const'
+import { apiURL } from '../const'
 import { AuthenticatedRequest } from './helpers'
 
 const UsersService = () => {

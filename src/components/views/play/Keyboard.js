@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, forwardRef, useImperativeHandle } from 'react';
+import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { charCodes, charConfig } from '../../../const'
 
 import Container from 'react-bootstrap/Container'
@@ -16,7 +16,7 @@ const Keyboard = forwardRef((props, ref) => {
     }
   }));
 
-  useEffect(() => {
+  useEffect(() =>
     setSounds(
       Object.values(charCodes).reduce((accum, key) => {
         if (props.keyboard.keys[key]) {
@@ -58,13 +58,10 @@ const Keyboard = forwardRef((props, ref) => {
             [key]: { audio: audio, playing: false, loading: false }
           };
         };
-      }, {}) || {}
-    )
-  }, [props.keyboard]);
 
-  const register = (key) => {
-    sounds[key].audio.play();
-  };
+        return null;
+      }, {}) || {}
+    ), [props.keyboard]);
 
   const deregister = (key) => {
     sounds[key].audio.pause();
@@ -78,20 +75,21 @@ const Keyboard = forwardRef((props, ref) => {
   };
 
   const onKeyPress = (key) => {
-    if (key == "space") {
-      return deregisterAll()
+    if (key === "space") {
+      return deregisterAll();
     };
 
-    if (sounds[key].playing) {
-      sounds[key].audio.currentTime = 0;
-
-      if (props.spamActive) {
-        sounds[key].audio.play();
-      } else {
-        sounds[key].audio.pause();
-      }
-    } else {
+    if (!sounds[key].playing) {
       sounds[key].audio.play();
+      return
+    }
+
+    sounds[key].audio.currentTime = 0;
+
+    if (props.spamActive) {
+      sounds[key].audio.play();
+    } else {
+      sounds[key].audio.pause();
     };
   };
 
@@ -102,7 +100,6 @@ const Keyboard = forwardRef((props, ref) => {
           <Row key={i} className="justify-content-md-center">
             {rowKeys.map((key, j) =>
               <Key key={key+j} 
-                   disabled={charConfig[key].disabled}
                    backgroundColor={charConfig[key].backgroundColor}
                    onClick={() => onKeyPress(key)}
                    char={key}
@@ -111,7 +108,7 @@ const Keyboard = forwardRef((props, ref) => {
                    disabled={props.keyboard.keys[key] && props.keyboard.keys[key].sound_name == null}
                    loading={sounds[key] ? sounds[key].loading : false}
                    soundName={props.keyboard.keys[key] && props.keyboard.keys[key].sound_name ? props.keyboard.keys[key].sound_name : "empty!"}
-                   />
+              />
             )}
           </Row>
         )

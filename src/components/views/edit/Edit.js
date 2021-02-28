@@ -8,14 +8,11 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Spinner from '../../Spinner'
 
-import soundsService from '../../../services/sounds'
-
 import Container from 'react-bootstrap/Container'
 import styled from 'styled-components'
 
 const Edit = ({ keyboard, refreshKeyboard }) => {
   const [sounds, setSounds]             = useState({});
-  const [audioPlaying, setAudioPlaying] = useState(false);
   const [selectedKey, setSelectedKey]   = useState(null);
   const [uploading, setUploading]       = useState(false);
 
@@ -35,10 +32,6 @@ const Edit = ({ keyboard, refreshKeyboard }) => {
     setUploading(true);
   };
 
-  const onDownloadClick = (key) => {
-    fetch(keyboard.keys[key].sound_url);
-  };
-
   const onDropZoneUpload = () => {
     setUploading(false);
     refreshKeyboard(keyboard.id);
@@ -56,7 +49,7 @@ const Edit = ({ keyboard, refreshKeyboard }) => {
     return "/assets/play-circle.svg";
   };
 
-  useEffect(() => {
+  useEffect(() =>
     setSounds(
       Object.values(charCodes).reduce((accum, key) => {
         if (keyboard.keys[key]) {
@@ -98,9 +91,10 @@ const Edit = ({ keyboard, refreshKeyboard }) => {
             [key]: { audio: audio, playing: false, loading: false }
           };
         };
+
+        return null;
       }, {}) || {}
-    )
-  }, [keyboard]);
+    ), [keyboard]);
 
   const groupElements = (array, chunkSize) => {
     let result = [];
@@ -152,6 +146,7 @@ const Edit = ({ keyboard, refreshKeyboard }) => {
           </CustomRow>
         )}
       )}
+      { uploading ? <DropzoneUploader onUpload={onDropZoneUpload} onClose={onDropZoneClose} keyboard={keyboard} targetKey={selectedKey} /> : null }
     </Container>
   );
 }

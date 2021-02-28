@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { charCodes, charConfig } from '../../../const'
+import { charCodes } from '../../../const'
 
 import Container from 'react-bootstrap/Container'
 import History from './History'
@@ -47,15 +47,6 @@ const ContainerKeyboard = styled(Container)`
   padding: 0;
   margin: 0;
   height: 80vh;
-`
-
-const ContainerFlex = styled(Container)`
-  text-align: center;
-  align-items: center;
-  height: 60%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 `
 
 export default Play;

@@ -5,8 +5,6 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup'
 
 import Icon from '../../Icon'
 
-import styled from 'styled-components'
-
 const SignIn = ({ google, facebook }) => {
   return (
     <ButtonGroup toggle>

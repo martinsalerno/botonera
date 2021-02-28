@@ -7,8 +7,6 @@ import SignOut from './SignOut'
 
 import { AuthContext } from '../../../contexts/auth'
 
-import styled from 'styled-components'
-
 const Login = (props) => {
   const [auth, setAuth] = useState({});
 
